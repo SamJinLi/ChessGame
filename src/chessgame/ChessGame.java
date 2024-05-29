@@ -5,8 +5,6 @@
  */
 package chessgame;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -19,7 +17,7 @@ import java.util.Scanner;
  *
  * @author Khouiled
  */
-public class ChessGame implements ActionListener{
+public class ChessGame{
     
     public static boolean developing = false;
     public static LinkedList<Piece> ps=new LinkedList<>();
@@ -162,11 +160,5 @@ public class ChessGame implements ActionListener{
             }
         }   
         return null;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
     }
 }
