@@ -23,7 +23,7 @@ public class ChessboardPanel extends JPanel {
     private void drawChessboard(Graphics g) {
         int width = getWidth();
         int height = getHeight();
-        squareSize = Math.min(Math.min(width, height), 750) / 8;
+        squareSize = Math.min(width, height) / 8;
         
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -112,6 +112,6 @@ public class ChessboardPanel extends JPanel {
                 Piece.bKingIndex = i;
             }
         }
-        System.out.println("updated king index");
+        //System.out.println("updated king index");
     }
 }

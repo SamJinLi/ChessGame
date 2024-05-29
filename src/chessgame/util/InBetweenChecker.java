@@ -63,7 +63,7 @@ public class InBetweenChecker {
      public static boolean isTherePieceInBetween(int destinationXp, int destinationYp, Piece thePiece)
      {
         boolean isVertical = (destinationXp == thePiece.xp) ? true : false;
-        System.out.println("inbetween is vertical = " + isVertical);
+        //System.out.println("inbetween is vertical = " + isVertical);
         if(isVertical)
         {
             if(destinationYp > thePiece.yp)
@@ -73,18 +73,18 @@ public class InBetweenChecker {
                     Piece other = ChessGame.getPieceByPosition(thePiece.xp, i);
                     if(other != null && destinationYp > i)
                     {
-                        System.out.println("this is bad");
+                        //System.out.println("this is bad");
                         return true;
                     }
                 }
             }
             else
             {
-                System.out.println("destination < yp");
+                //System.out.println("destination < yp");
                 for(int i = thePiece.yp-1; i > 0; i --)
                 {
                     Piece other = ChessGame.getPieceByPosition(thePiece.xp, i);
-                    System.out.println("isOther null? " + other == null);
+                    //System.out.println("isOther null? " + other == null);
                     if(other != null && destinationYp < i)
                     {
                         return true;
@@ -127,69 +127,117 @@ public class InBetweenChecker {
         {
             if(goingLeft)
             {
-                System.out.println("going up and left");
-                for(int y = thePiece.yp - 1; y >= destinationYp; y --)
+                //System.out.println("going up and left");
+                int y = thePiece.yp -1;
+                int x = thePiece.xp -1;
+                while(y >= destinationYp && x >= destinationXp)
                 {
-                    for(int x = thePiece.xp - 1; x >= destinationXp; x --)
-                    {
-                        Piece other = ChessGame.getPieceByPosition(x, y);
+                    Piece other = ChessGame.getPieceByPosition(x, y);
                         if(other != null && destinationXp < x && destinationYp < y)
                         {
                             return true;
                         }
-                    }
+                    y --;
+                    x --;
                 }
+                // for(int y = thePiece.yp - 1; y >= destinationYp; y --)
+                // {
+                //     for(int x = thePiece.xp - 1; x >= destinationXp; x --)
+                //     {
+                //         Piece other = ChessGame.getPieceByPosition(x, y);
+                //         if(other != null && destinationXp < x && destinationYp < y)
+                //         {
+                //             return true;
+                //         }
+                //     }
+                // }
             }
             else
             {
-                System.out.println("going up and right");
-                for(int y = thePiece.yp - 1; y >= destinationYp; y --)
+                //System.out.println("going up and right");
+                int y = thePiece.yp - 1;
+                int x = thePiece.xp + 1;
+                while(y >= destinationYp && x <= destinationXp)
                 {
-                    for(int x = thePiece.xp + 1; x <= destinationXp; x ++)
-                    {
-                        Piece other = ChessGame.getPieceByPosition(x, y);
+                    Piece other = ChessGame.getPieceByPosition(x, y);
                         if(other != null && destinationXp > x && destinationYp < y)
                         {
                             return true;
                         }
-                    }
+                    y --;
+                    x ++;
                 }
+                // for(int y = thePiece.yp - 1; y >= destinationYp; y --)
+                // {
+                //     for(int x = thePiece.xp + 1; x <= destinationXp; x ++)
+                //     {
+                //         Piece other = ChessGame.getPieceByPosition(x, y);
+                //         if(other != null && destinationXp > x && destinationYp < y)
+                //         {
+                //             return true;
+                //         }
+                //     }
+                // }
             }
         }
         else
         {
             if(goingLeft)
             {
-                System.out.println("going down and left");
-                for(int y = thePiece.yp + 1; y <= destinationYp; y ++)
+                //System.out.println("going down and left");
+                int y = thePiece.yp + 1;
+                int x = thePiece.xp - 1;
+                while(y <= destinationYp && x >= destinationXp)
                 {
-                    for(int x = thePiece.xp - 1; x >= destinationXp; x --)
-                    {
-                        Piece other = ChessGame.getPieceByPosition(x, y);
+                    Piece other = ChessGame.getPieceByPosition(x, y);
                         if(other != null && destinationXp < x && destinationYp > y)
                         {
                             return true;
                         }
-                    }
+                    y ++;
+                    x --;
                 }
+                // for(int y = thePiece.yp + 1; y <= destinationYp; y ++)
+                // {
+                //     for(int x = thePiece.xp - 1; x >= destinationXp; x --)
+                //     {
+                //         Piece other = ChessGame.getPieceByPosition(x, y);
+                //         if(other != null && destinationXp < x && destinationYp > y)
+                //         {
+                //             return true;
+                //         }
+                //     }
+                // }
             }
             else
             {
-                System.out.println("going down and right");
-                for(int y = thePiece.yp + 1; y <= destinationYp; y ++)
+                //System.out.println("going down and right");
+                int y = thePiece.yp + 1;
+                int x = thePiece.xp + 1;
+                while(y <= destinationYp && x <= destinationXp)
                 {
-                    for(int x = thePiece.xp + 1; x <= destinationXp; x ++)
-                    {
-                        Piece other = ChessGame.getPieceByPosition(x, y);
+                    Piece other = ChessGame.getPieceByPosition(x, y);
                         if(other != null && destinationXp > x && destinationYp > y)
                         {
                             return true;
                         }
-                    }
+                    y ++;
+                    x ++;
                 }
+                // for(int y = thePiece.yp + 1; y <= destinationYp; y ++)
+                // {
+                //     for(int x = thePiece.xp + 1; x <= destinationXp; x ++)
+                //     {
+                //         Piece other = ChessGame.getPieceByPosition(x, y);
+                //         if(other != null && destinationXp > x && destinationYp > y)
+                //         {
+                //             return true;
+                //         }
+                //     }
+                // }
             }
         }
-        System.out.println("gone through all diagnal check");
+        //System.out.println("gone through all diagnal check");
         return false;
      }
 }

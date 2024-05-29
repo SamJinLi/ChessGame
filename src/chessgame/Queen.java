@@ -12,23 +12,28 @@ public class Queen extends Piece {
     @Override
     public boolean isMoveLegal(int xp, int yp) {
         // TODO Auto-generated method stub
-        if(super.xp != xp && super.yp != yp)
+        if((super.xp != xp && super.yp != yp) && (Math.abs(super.xp - xp) != Math.abs(super.yp - yp)))
         {
-            System.out.println("rook false");
+            //System.out.println("queen false 1");
             return false;
         }
-        if(InBetweenChecker.isTherePieceInBetween(xp, yp,this))
+        boolean isDiagnol = Math.abs(super.xp - xp) == Math.abs(super.yp - yp), condition = InBetweenChecker.checkDiagnol(xp, yp, this);
+        //System.out.println("TEST :: isdiagnol = " + isDiagnol + ", condition = " + condition + ", super.xp = " + super.xp + ", super.yp = " + super.yp + ", xp = " + xp + ", yp = " + yp);
+        if(isDiagnol && !condition)
         {
+            //System.out.println("hahaahahah");
+            return true;
+        }
+        if((InBetweenChecker.isTherePieceInBetween(xp, yp,this)))
+        { 
+            //System.out.println("queen false 2");
             return false;
         }
-        if(Math.abs(super.xp - xp) != Math.abs(super.yp - yp))
-        {
-            return false;
-        }
-        if(InBetweenChecker.checkDiagnol(xp, yp, this))
-        {
-            return false;
-        }
+        // if(Math.abs(super.xp - xp) != Math.abs(super.yp - yp))
+        // {
+        //     //System.out.println("queen false 3");
+        //     return false;
+        // }
         
         return true;
     }

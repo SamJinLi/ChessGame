@@ -5,28 +5,23 @@
  */
 package chessgame;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.util.Scanner;
 
 /**
  *
  * @author Khouiled
  */
-public class ChessGame {
+public class ChessGame implements ActionListener{
     
-    public static boolean developing = true;
+    public static boolean developing = false;
     public static LinkedList<Piece> ps=new LinkedList<>();
     public static Piece selectedPiece = null;
     public static int scaleFactor = ChessboardPanel.squareSize;
@@ -71,6 +66,7 @@ public class ChessGame {
         Piece wpawn8=new Pawn(0, 6, true, ps);
         
         JFrame frame = new JFrame("Chessboard");
+        
         frame.setBounds(10, 10, 550, 560);
         frame.setUndecorated(false);
         frame.setAlwaysOnTop(true);
@@ -102,7 +98,7 @@ public class ChessGame {
                 {
                     selectedPiece = null;
                 }
-                System.out.println(selectedPiece != null ? ((selectedPiece.isWhite ? "white " : "black ") + selectedPiece.getName()) : "no selectedpiece -- is null");
+                //System.out.println(selectedPiece != null ? ((selectedPiece.isWhite ? "white " : "black ") + selectedPiece.getName()) : "no selectedpiece -- is null");
             }
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -112,7 +108,7 @@ public class ChessGame {
                     int xp = (e.getX()- 8)/(ChessboardPanel.squareSize);
                     int yp = (e.getY() - 31)/(ChessboardPanel.squareSize);
                     boolean moveWasLegal = selectedPiece.move(xp, yp);
-                    System.out.println("was move legal chessgame: " + moveWasLegal);
+                    //System.out.println("was move legal chessgame: " + moveWasLegal);
                     if(moveWasLegal)
                     {
                         isWhiteMoving =  !isWhiteMoving;
@@ -127,7 +123,7 @@ public class ChessGame {
                 }
                 else
                 {
-                    System.out.println("selectedPieceIsNull");
+                    //System.out.println("selectedPieceIsNull");
                 }
             }
             @Override
@@ -145,7 +141,7 @@ public class ChessGame {
     {
         int xp = (x - 8)/(ChessboardPanel.squareSize);
         int yp = (y - 31)/(ChessboardPanel.squareSize);
-        System.out.println("getPiece--X: " + xp + ", y: " + yp);
+        //System.out.println("getPiece--X: " + xp + ", y: " + yp);
         for(Piece p : ps)
         {
             if(p.xp == xp && p.yp == yp)
@@ -166,5 +162,11 @@ public class ChessGame {
             }
         }   
         return null;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
     }
 }

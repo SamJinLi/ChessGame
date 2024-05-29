@@ -7,7 +7,7 @@ package chessgame;
 
 import java.util.LinkedList;
 
-import chessgame.ChessGame;
+import chessgame.ChessboardPanel;
 
 /**
  *
@@ -41,8 +41,8 @@ public class Piece {
         // });
         isDragging = false;
         Piece other = ChessGame.getPieceByPosition(xp, yp);
-        // System.out.println("move xp: " + xp + ", yp: " + yp + ", other: " + (other == null ? "null" : ((other.isWhite ? "white " : "black ") + other.name)));
-        // System.out.println("isWhiteMoving == " + ChessGame.isWhiteMoving + ", isWhite == " + isWhite);
+        // //System.out.println("move xp: " + xp + ", yp: " + yp + ", other: " + (other == null ? "null" : ((other.isWhite ? "white " : "black ") + other.name)));
+        // //System.out.println("isWhiteMoving == " + ChessGame.isWhiteMoving + ", isWhite == " + isWhite);
         if(ChessGame.isWhiteMoving && (!isWhite) && !ChessGame.developing)
         {
             return false;
@@ -52,19 +52,30 @@ public class Piece {
             return false;
         }
         boolean isMoveLegal = isMoveLegal(xp, yp);
-        // System.out.println("isMoveLegal piece + " + isMoveLegal);
-        if(ChessGame.wChecked && isWhite && ((other!= null && other.isWhite != isWhite) || (other == null && xp < 8 && yp < 8)))
+        // //System.out.println("isMoveLegal piece + " + isMoveLegal);
+        // int tempxp = this.xp, tempyp = this.yp;
+        if(((ChessGame.wChecked && isWhite) || (ChessGame.bChecked && !isWhite)) && ((other!= null && other.isWhite != isWhite && isMoveLegal) || (other == null && xp < 8 && yp < 8 && isMoveLegal)))
         {
-            int tempxp = xp, tempyp = yp;
+            //System.out.println("before..." + tempxp + ", yp = " + tempyp);
             this.xp = xp;
             this.yp = yp;
-            if(isThereStillCheck())
+            x = xp*ChessboardPanel.squareSize;
+            y = yp*ChessboardPanel.squareSize;
+            //System.out.println("this supposed to be updated, this.xp = " + xp + ", yp = " + yp);
+            if(other!= null && other.isWhite != isWhite && isMoveLegal)
             {
-                this.xp = tempxp;
-                this.yp = tempyp;
-                System.out.println("HEY! Still checked");
-                return false;
+                other.kill();
             }
+            // boolean isThereStillCheck = isThereStillCheck();
+            // if(isThereStillCheck)
+            // {
+            //     this.xp = tempxp;
+            //     this.yp = tempyp;
+            //     x = xp * ChessboardPanel.squareSize;
+            //     y = yp * ChessboardPanel.squareSize;
+            //     System.out.println("HEY! Still checked");
+            //     return false;
+            // }
         }
         if(other!= null && other.isWhite != isWhite && isMoveLegal)
         {
@@ -73,8 +84,15 @@ public class Piece {
             this.yp=yp;
             x = xp*ChessboardPanel.squareSize;
             y = yp*ChessboardPanel.squareSize;
-            // System.out.println("kill piece: " + (other.isWhite ? "white " : "black ") + other.name + " and moved " + (this.isWhite ? "white " : "black ") + this.getName() + " to " + xp + yp);
-            checkForCheckThisPiece();
+            // //System.out.println("kill piece: " + (other.isWhite ? "white " : "black ") + other.name + " and moved " + (this.isWhite ? "white " : "black ") + this.getName() + " to " + xp + yp);
+            // if(isThereStillCheck())
+            // {
+            //     this.xp = tempxp;
+            //     this.yp = tempyp;
+            //     x = xp*ChessboardPanel.squareSize;
+            //     y = yp*ChessboardPanel.squareSize;
+            //     return false;
+            // }
             return true;
         }
         if(other == null && xp < 8 && yp < 8 && isMoveLegal)
@@ -83,73 +101,87 @@ public class Piece {
             this.yp=yp;
             x = xp*ChessboardPanel.squareSize;
             y = yp*ChessboardPanel.squareSize;
-            // System.out.println("moved " + (this.isWhite ? "white " : "black ") + this.getName() + " to " + xp + yp);
-            checkForCheckThisPiece();
+            // //System.out.println("moved " + (this.isWhite ? "white " : "black ") + this.getName() + " to " + xp + yp);
+            // if(isThereStillCheck())
+            // {
+            //     this.xp = tempxp;
+            //     this.yp = tempyp;
+            //     x = xp*ChessboardPanel.squareSize;
+            //     y = yp*ChessboardPanel.squareSize;
+            //     return false;
+            // }
             return true;
         }
         return false;
     }
 
-    public void checkForCheckThisPiece()
-    {
-        if(wKingIndex > -1 && bKingIndex > -1)
-        {
-            int wxp = ps.get(wKingIndex).xp, wyp = ps.get(wKingIndex).yp, bxp = ps.get(bKingIndex).xp, byp = ps.get(bKingIndex).yp;
-            if(isWhite)
-            {
-                if(isMoveLegal(bxp, byp))
-                {
-                    ChessGame.bChecked = true;
-                }
-            }
-            else if(!isWhite)
-            {
-                if(isMoveLegal(wxp, wyp))
-                {
-                    ChessGame.wChecked = true;
-                }
-            }
-        }
-        else
-        {
-            System.err.println("ERROR: KING NOT FOUND");
-        }
-    }
+    // public boolean checkForCheckThisPiece()
+    // {
+    //     if(wKingIndex > -1 && bKingIndex > -1)
+    //     {
+    //         int wxp = ps.get(wKingIndex).xp, wyp = ps.get(wKingIndex).yp, bxp = ps.get(bKingIndex).xp, byp = ps.get(bKingIndex).yp;
+    //         if(isWhite)
+    //         {
+    //             if(isMoveLegal(bxp, byp))
+    //             {
+    //                 ChessGame.bChecked = true;
+    //                 System.out.println("White checked black!");
+    //                 return true;
+    //             }
+    //         }
+    //         else if(!isWhite)
+    //         {
+    //             if(isMoveLegal(wxp, wyp))
+    //             {
+    //                 ChessGame.wChecked = true;
+    //                 System.out.println("Black checked white!");
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         System.err.println("ERROR: KING NOT FOUND");
+    //     }
+    //     return false;
+    // }
 
-    public boolean isThereStillCheck()
-    {
-        if(wKingIndex > -1 && bKingIndex > -1)
-        {
-            int wxp = ps.get(wKingIndex).xp, wyp = ps.get(wKingIndex).yp, bxp = ps.get(bKingIndex).xp, byp = ps.get(bKingIndex).yp;
-            if(isWhite)
-            {
-                for(Piece p : ps)
-                {
-                    if(p.isWhite != isWhite && p.isMoveLegal(bxp, byp))
-                    {
-                        return true;
-                    }
-                }
-                ChessGame.bChecked = false;
-            }
-            else if(!isWhite)
-            {
-                for(Piece p : ps)
-                {
-                    if(p.isWhite != isWhite && p.isMoveLegal(bxp, byp))
-                    {
-                        return true;
-                    }
-                }
-                ChessGame.wChecked = false;
-            }
-        }
-        else
-        {
-            System.err.println("ERROR: KING NOT FOUND");
-        }
-        return false;
-    }
+    // public boolean isThereStillCheck()
+    // {
+    //     if(wKingIndex > -1 && bKingIndex > -1)
+    //     {
+    //         int wxp = ps.get(wKingIndex).xp, wyp = ps.get(wKingIndex).yp, bxp = ps.get(bKingIndex).xp, byp = ps.get(bKingIndex).yp;
+    //         if(isWhite)
+    //         {
+    //             for(Piece p : ps)
+    //             {
+    //                 if(p.isWhite != isWhite && !p.name.equals("king") && p.isMoveLegal(bxp, byp))
+    //                 {
+    //                     System.out.println(p.isWhite + " " + p.name + " is checking");
+    //                     return true;
+    //                 }
+    //             }
+    //         }
+    //         else if(!isWhite)
+    //         {
+    //             for(Piece p : ps)
+    //             {
+    //                 if(p.isWhite != isWhite && !p.name.equals("king") && p.isMoveLegal(bxp, byp))
+    //                 {
+    //                     return true;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         System.err.println("ERROR: KING NOT FOUND");
+    //     }
+    //     System.out.println("Should un-check");
+    //     ChessGame.wChecked = false;
+    //     ChessGame.bChecked = false;
+    //     return false;
+    // }
 
     public boolean isMoveLegal(int xp, int yp)
     {
